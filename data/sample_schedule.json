@@ -1,0 +1,39 @@
+{
+  "pipeline_id": "pipeline-demo-001",
+  "status": "ready",
+  "generated_at": "2026-07-03T20:40:00Z",
+  "tasks": [
+    {
+      "node_id": "execute",
+      "node_name": "Execute Pipeline",
+      "run_at": "2026-07-03T20:40:20Z",
+      "delay_seconds": 20,
+      "next_attempt": 2,
+      "status": "scheduled",
+      "reason": "retry allowed",
+      "metadata": {
+        "command": "echo execute"
+      }
+    },
+    {
+      "node_id": "notify",
+      "node_name": "Notify Result",
+      "run_at": "2026-07-03T20:40:10Z",
+      "delay_seconds": 10,
+      "next_attempt": 1,
+      "status": "scheduled",
+      "reason": "retry allowed",
+      "metadata": {
+        "command": "echo notify"
+      }
+    }
+  ],
+  "summary": {
+    "pipeline_id": "pipeline-demo-001",
+    "total_tasks": 2,
+    "queued_tasks": 2
+  },
+  "metadata": {
+    "source": "schedule"
+  }
+}
