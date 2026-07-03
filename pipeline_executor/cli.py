@@ -3,6 +3,7 @@ import sys
 
 from pipeline_executor.executor import execute_tasks
 from pipeline_executor.loader import ScheduleLoaderError, load_schedule
+from pipeline_executor.report_exporter import write_execution_report_json
 from pipeline_executor.result_builder import build_execution_report
 from pipeline_executor.selector import select_executable_tasks
 
@@ -34,6 +35,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Show task execution details.",
     )
+    execute_parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Write execution report as JSON.",
+    )
+    execute_parser.add_argument(
+        "--output",
+        default="outputs/execution_report.json",
+        help="Output path for JSON execution report.",
+    )
 
     return parser
 
@@ -55,6 +66,11 @@ def run_execute(args: argparse.Namespace) -> int:
     except (ScheduleLoaderError, ValueError, TypeError) as error:
         print(f"error: {error}", file=sys.stderr)
         return 1
+
+    if args.json:
+        output_path = write_execution_report_json(report, args.output)
+        print(f"JSON execution report written: {output_path}")
+        return 0 if report.status in {"completed", "empty"} else 2
 
     print("Pipeline Executor")
     print("=================")

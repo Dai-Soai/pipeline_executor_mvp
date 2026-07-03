@@ -106,3 +106,32 @@ def test_cli_execute_empty_schedule(tmp_path, capsys):
     assert exit_code == 0
     assert "Status: empty" in captured.out
     assert "Total Results: 0" in captured.out
+
+
+def test_cli_execute_json_writes_report(tmp_path, capsys):
+    schedule_file = tmp_path / "schedule.json"
+    output_file = tmp_path / "execution_report.json"
+
+    schedule_file.write_text(json.dumps(sample_schedule()), encoding="utf-8")
+
+    exit_code = main(
+        [
+            "execute",
+            str(schedule_file),
+            "--json",
+            "--output",
+            str(output_file),
+        ]
+    )
+
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "JSON execution report written:" in captured.out
+    assert output_file.exists()
+
+    payload = json.loads(output_file.read_text(encoding="utf-8"))
+
+    assert payload["pipeline_id"] == "pipeline-001"
+    assert payload["status"] == "completed"
+    assert payload["summary"]["total_results"] == 1
