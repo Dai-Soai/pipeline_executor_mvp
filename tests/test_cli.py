@@ -17,9 +17,7 @@ def sample_schedule():
                 "next_attempt": 2,
                 "status": "scheduled",
                 "reason": "retry allowed",
-                "metadata": {
-                    "command": "echo execute"
-                },
+                "metadata": {"command": "echo execute"},
             }
         ],
         "summary": {},

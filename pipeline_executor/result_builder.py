@@ -5,7 +5,12 @@ from pipeline_executor.contract import ExecutionReport, ExecutionResult
 
 
 def utc_now_iso() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return (
+        datetime.now(timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
 
 
 def count_successful_results(results: list[ExecutionResult]) -> int:

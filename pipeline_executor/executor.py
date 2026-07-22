@@ -6,7 +6,12 @@ from pipeline_executor.contract import ExecutionResult, ExecutionTask
 
 
 def utc_now_iso() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return (
+        datetime.now(timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
 
 
 def get_task_command(task: ExecutionTask) -> str:
@@ -34,7 +39,7 @@ def execute_command(
             timeout=timeout_seconds,
             check=False,
         )
-    except subprocess.TimeoutExpired as error:
+    except subprocess.TimeoutExpired:
         return (
             False,
             f"command timed out after {timeout_seconds}s",
@@ -50,7 +55,11 @@ def execute_command(
     if error_output:
         message_parts.append(error_output)
 
-    message = "\n".join(message_parts) if message_parts else f"exit_code={completed.returncode}"
+    message = (
+        "\n".join(message_parts)
+        if message_parts
+        else f"exit_code={completed.returncode}"
+    )
 
     return completed.returncode == 0, message, completed.returncode
 
@@ -97,7 +106,4 @@ def execute_tasks(
     tasks: list[ExecutionTask],
     timeout_seconds: int = 30,
 ) -> list[ExecutionResult]:
-    return [
-        execute_task(task, timeout_seconds=timeout_seconds)
-        for task in tasks
-    ]
+    return [execute_task(task, timeout_seconds=timeout_seconds) for task in tasks]

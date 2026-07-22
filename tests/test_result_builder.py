@@ -71,30 +71,39 @@ def test_determine_report_status_empty():
 
 
 def test_determine_report_status_completed():
-    assert determine_report_status(
-        [
-            make_result("a", True),
-            make_result("b", True),
-        ]
-    ) == "completed"
+    assert (
+        determine_report_status(
+            [
+                make_result("a", True),
+                make_result("b", True),
+            ]
+        )
+        == "completed"
+    )
 
 
 def test_determine_report_status_failed():
-    assert determine_report_status(
-        [
-            make_result("a", False),
-            make_result("b", False),
-        ]
-    ) == "failed"
+    assert (
+        determine_report_status(
+            [
+                make_result("a", False),
+                make_result("b", False),
+            ]
+        )
+        == "failed"
+    )
 
 
 def test_determine_report_status_partial():
-    assert determine_report_status(
-        [
-            make_result("a", True),
-            make_result("b", False),
-        ]
-    ) == "partial"
+    assert (
+        determine_report_status(
+            [
+                make_result("a", True),
+                make_result("b", False),
+            ]
+        )
+        == "partial"
+    )
 
 
 def test_build_execution_summary():
